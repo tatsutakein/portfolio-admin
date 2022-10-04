@@ -3,7 +3,7 @@
     "public": "app/build/web",
     "ignore": [
       "firebase.json",
-      "**/.*",
+      "**/.last_build_id",
       "**/node_modules/**"
     ],
     "rewrites": [
