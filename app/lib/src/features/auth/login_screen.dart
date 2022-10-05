@@ -92,7 +92,7 @@ class _LoginScreenState extends AuthState<LoginScreen> {
             ),
             keyboardType: TextInputType.visiblePassword,
             obscureText: true,
-            textInputAction: TextInputAction.go,
+            textInputAction: TextInputAction.done,
             onFieldSubmitted: (String? value) {
               if (!_isLoading) _signIn;
             },

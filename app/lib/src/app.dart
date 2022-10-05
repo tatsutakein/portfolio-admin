@@ -6,6 +6,10 @@ import 'package:portfolio_admin/src/features/auth/change_password_screen.dart';
 import 'package:portfolio_admin/src/features/auth/login_screen.dart';
 import 'package:portfolio_admin/src/features/dashboard/dashboard_screen.dart';
 import 'package:portfolio_admin/src/features/splash/splash_screen.dart';
+import 'package:portfolio_admin/src/features/tech/articles/tech_article_edit_screen.dart';
+import 'package:portfolio_admin/src/features/tech/articles/tech_article_list_screen.dart';
+import 'package:portfolio_admin/src/features/tech/articles/tech_articles.dart';
+import 'package:portfolio_admin/src/features/tech/tags/tech_tag_list_screen.dart';
 
 import 'sample_feature/sample_item_details_view.dart';
 import 'sample_feature/sample_item_list_view.dart';
@@ -78,6 +82,15 @@ class MyApp extends StatelessWidget {
                     return const ChangePasswordScreen();
                   case DashboardScreen.routeName:
                     return const DashboardScreen();
+                  case TechArticlesScreen.routeName:
+                    if (routeSettings.arguments is TechArticleEditScreenArguments) {
+                      var args = routeSettings.arguments as TechArticleEditScreenArguments;
+                      return TechArticleEditScreen(id: args.id);
+                    } else {
+                      return const TechArticleListScreen();
+                    }
+                  case TechTagListScreen.routeName:
+                    return const TechTagListScreen();
                   case SampleItemListView.routeName:
                     return const SampleItemListView();
                   case SampleItemDetailsView.routeName:

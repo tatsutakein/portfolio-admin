@@ -1,33 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio_admin/src/components/auth_required_state.dart';
 import 'package:portfolio_admin/src/features/auth/change_password_screen.dart';
-import 'package:portfolio_admin/src/features/tech/articles/tech_article_list_screen.dart';
-import 'package:portfolio_admin/src/features/tech/articles/tech_articles.dart';
 import 'package:portfolio_admin/src/utils/constants.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({Key? key}) : super(key: key);
+class TechTagListScreen extends StatefulWidget {
+  const TechTagListScreen({Key? key}) : super(key: key);
 
-  static const routeName = '/dashboard';
+  static const routeName = '/tech/tags';
 
   @override
-  _DashboardScreenState createState() => _DashboardScreenState();
+  _TechTagListScreenState createState() => _TechTagListScreenState();
 }
 
-class _DashboardScreenState extends AuthRequiredState<DashboardScreen> {
+class _TechTagListScreenState extends AuthRequiredState<TechTagListScreen> {
   void _navigateToChangePasswordScreen() {
-    Navigator.restorablePushNamed(
-      context,
-      ChangePasswordScreen.routeName,
-    );
-  }
-
-  void _navigateToTechArticleListScreen() {
-    Navigator.restorablePushNamed(
-      context,
-      TechArticlesScreen.routeName,
-    );
+    Navigator.of(context).pushNamedAndRemoveUntil(
+        ChangePasswordScreen.routeName, (route) => false);
   }
 
   Future<void> _signOut() async {
@@ -54,18 +43,13 @@ class _DashboardScreenState extends AuthRequiredState<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('ダッシュボード')),
+      appBar: AppBar(title: const Text('Dashboard')),
       body: ListView(
         padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
         children: [
           ElevatedButton(
-            onPressed: _navigateToTechArticleListScreen,
-            child: const Text('技術ブログ'),
-          ),
-          const SizedBox(height: 32),
-          ElevatedButton(
             onPressed: _navigateToChangePasswordScreen,
-            child: const Text('パスワード変更'),
+            child: const Text('ChangePassword'),
           ),
           const SizedBox(height: 32),
           ElevatedButton(onPressed: _signOut, child: const Text('Sign Out')),
