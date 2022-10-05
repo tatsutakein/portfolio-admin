@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio_admin/src/components/auth_state.dart';
 
-class SplashPage extends StatefulWidget {
-  const SplashPage({Key? key}) : super(key: key);
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({Key? key}) : super(key: key);
 
   static const routeName = '/';
 
   @override
-  _SplashPageState createState() => _SplashPageState();
+  _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SplashPageState extends AuthState<SplashPage> {
+class _SplashScreenState extends AuthState<SplashScreen> {
   @override
   void initState() {
     recoverSupabaseSession();

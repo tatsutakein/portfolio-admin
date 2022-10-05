@@ -3,16 +3,16 @@ import 'package:portfolio_admin/src/components/auth_required_state.dart';
 import 'package:portfolio_admin/src/utils/constants.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class AccountPage extends StatefulWidget {
-  const AccountPage({Key? key}) : super(key: key);
+class AccountScreen extends StatefulWidget {
+  const AccountScreen({Key? key}) : super(key: key);
 
   static const routeName = '/account';
 
   @override
-  _AccountPageState createState() => _AccountPageState();
+  _AccountScreenState createState() => _AccountScreenState();
 }
 
-class _AccountPageState extends AuthRequiredState<AccountPage> {
+class _AccountScreenState extends AuthRequiredState<AccountScreen> {
   final _usernameController = TextEditingController();
   final _websiteController = TextEditingController();
   var _loading = false;

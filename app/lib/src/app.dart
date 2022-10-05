@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:portfolio_admin/src/features/account/account_page.dart';
-import 'package:portfolio_admin/src/features/auth/login_page.dart';
-import 'package:portfolio_admin/src/features/splash/splash_page.dart';
+import 'package:portfolio_admin/src/features/account/account_screen.dart';
+import 'package:portfolio_admin/src/features/auth/change_password_screen.dart';
+import 'package:portfolio_admin/src/features/auth/login_screen.dart';
+import 'package:portfolio_admin/src/features/dashboard/dashboard_screen.dart';
+import 'package:portfolio_admin/src/features/splash/splash_screen.dart';
 
 import 'sample_feature/sample_item_details_view.dart';
 import 'sample_feature/sample_item_list_view.dart';
@@ -70,19 +72,23 @@ class MyApp extends StatelessWidget {
               settings: routeSettings,
               builder: (BuildContext context) {
                 switch (routeSettings.name) {
-                  case SettingsView.routeName:
-                    return SettingsView(controller: settingsController);
-                  case SampleItemDetailsView.routeName:
-                    return const SampleItemDetailsView();
+                  case LoginScreen.routeName:
+                    return const LoginScreen();
+                  case ChangePasswordScreen.routeName:
+                    return const ChangePasswordScreen();
+                  case DashboardScreen.routeName:
+                    return const DashboardScreen();
                   case SampleItemListView.routeName:
                     return const SampleItemListView();
-                  case AccountPage.routeName:
-                    return const AccountPage();
-                  case LoginPage.routeName:
-                    return const LoginPage();
-                  case SplashPage.routeName:
+                  case SampleItemDetailsView.routeName:
+                    return const SampleItemDetailsView();
+                  case AccountScreen.routeName:
+                    return const AccountScreen();
+                  case SettingsView.routeName:
+                    return SettingsView(controller: settingsController);
+                  case SplashScreen.routeName:
                   default:
-                    return const SplashPage();
+                    return const SplashScreen();
                 }
               },
             );
