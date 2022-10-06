@@ -12,11 +12,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_dotenv: ^5.0.2
   flutter_localizations:
     sdk: flutter
   flutter_web_plugins:
     sdk: flutter
+  flutter_dotenv: ^5.0.2
+  flutter_datetime_picker: ^1.5.1
+  intl: ^0.17.0
   supabase_flutter: ^0.3.3
 
 dev_dependencies:
