@@ -1,7 +1,6 @@
 {
     "name": "ripomoea-admin",
     "short_name": "ripomoeadmin",
-    "start_url": ".",
     "display": "standalone",
     "background_color": "#8A2BE2",
     "theme_color": "#8A2BE2",
