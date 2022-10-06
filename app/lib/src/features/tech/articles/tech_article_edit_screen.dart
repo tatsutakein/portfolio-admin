@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:portfolio_admin/src/components/auth_required_state.dart';
-import 'package:portfolio_admin/src/features/auth/change_password_screen.dart';
 import 'package:portfolio_admin/src/features/tech/eyecatch.dart';
 import 'package:portfolio_admin/src/features/tech/tags/tech_tag_list_screen.dart';
 import 'package:portfolio_admin/src/features/tech/tech_article.dart';
@@ -28,6 +29,7 @@ class _TechArticleEditScreenState
   late TechArticle article;
   late final TextEditingController _titleController;
   late final TextEditingController _contentController;
+  DateTime? _publishedAt;
   var _isLoading = false;
   var _isUpdating = false;
 
@@ -79,6 +81,11 @@ class _TechArticleEditScreenState
     _titleController.text = article.title;
     _contentController.text = article.content;
 
+    final publishedAtString = article.publishedAt;
+    setState(() => _publishedAt = (publishedAtString != null)
+        ? DateTime.tryParse(publishedAtString)
+        : null);
+
     setState(() => _isLoading = false);
   }
 
@@ -110,6 +117,8 @@ class _TechArticleEditScreenState
 
   @override
   Widget build(BuildContext context) {
+    final formatter = DateFormat('yyyy/MM/dd(E) HH:mm', 'ja');
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('技術ブログ'),
@@ -117,10 +126,6 @@ class _TechArticleEditScreenState
           IconButton(
             icon: const Icon(Icons.tag),
             onPressed: () {
-              // Navigate to the settings page. If the user leaves and returns
-              // to the app after it has been killed while running in the
-              // background, the navigation stack is restored.
-
               Navigator.restorablePushNamed(
                 context,
                 TechTagListScreen.routeName,
@@ -129,37 +134,83 @@ class _TechArticleEditScreenState
           ),
         ],
       ),
-      body: ListView(
-        padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
+      body: Stack(
         children: [
-          TextFormField(
-            controller: _titleController,
-            decoration: const InputDecoration(
-              labelText: 'タイトル',
-              icon: Icon(Icons.title),
-              border: OutlineInputBorder(),
+          ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  const Text(
+                    '公開日時:',
+                    // style: TextStyle(
+                    //   fontWeight: FontWeight.bold,
+                    // ),
+                  ),
+                  const SizedBox(width: 8),
+                  Text((_publishedAt != null)
+                      ? formatter.format(_publishedAt!)
+                      : '未設定'),
+                  ClipOval(
+                    child: Material(
+                      child: InkWell(
+                        onTap: () => DatePicker.showDateTimePicker(
+                          context,
+                          showTitleActions: true,
+                          onConfirm: (DateTime date) {
+                            setState(() => _publishedAt = date);
+                          },
+                          currentTime: _publishedAt,
+                          locale: LocaleType.jp,
+                        ),
+                        child: Container(
+                          padding: const EdgeInsets.all(16),
+                          child: const Icon(Icons.edit),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const Text('タイトル'),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _titleController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.next,
+              ),
+              const SizedBox(height: 32),
+              const Text('内容'),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _contentController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                ),
+                minLines: 24,
+                maxLines: null,
+                keyboardType: TextInputType.multiline,
+                textInputAction: TextInputAction.newline,
+              ),
+              const SizedBox(height: 32),
+              ElevatedButton(
+                onPressed: _isUpdating ? null : _updateArticle,
+                child: Text(_isUpdating ? '保存中です...' : '保存する'),
+              ),
+              const SizedBox(height: 32),
+            ],
+          ),
+          AnimatedOpacity(
+            opacity: _isLoading ? 1: 0,
+            duration: const Duration(milliseconds: 250),
+            child: const Center(
+              child: CircularProgressIndicator.adaptive(),
             ),
-            keyboardType: TextInputType.text,
-            textInputAction: TextInputAction.next,
           ),
-          const SizedBox(height: 32),
-          TextFormField(
-            controller: _contentController,
-            decoration: const InputDecoration(
-              labelText: '内容',
-              icon: Icon(Icons.text_fields_outlined),
-              border: OutlineInputBorder(),
-            ),
-            maxLines: null,
-            keyboardType: TextInputType.multiline,
-            textInputAction: TextInputAction.newline,
-          ),
-          const SizedBox(height: 32),
-          ElevatedButton(
-            onPressed: _isUpdating ? null : _updateArticle,
-            child: Text(_isUpdating ? 'Updating' : 'Update'),
-          ),
-          const SizedBox(height: 32),
         ],
       ),
     );

@@ -8,15 +8,20 @@ class AuthState<T extends StatefulWidget> extends SupabaseAuthState<T> {
   @override
   void onUnauthenticated() {
     if (mounted) {
-      Navigator.of(context).pushNamedAndRemoveUntil(LoginScreen.routeName, (route) => false);
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        LoginScreen.routeName,
+        (route) => false,
+      );
     }
   }
 
   @override
   void onAuthenticated(Session session) {
     if (mounted) {
-      Navigator.of(context)
-          .pushNamedAndRemoveUntil(DashboardScreen.routeName, (route) => false);
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        DashboardScreen.routeName,
+        (route) => false,
+      );
     }
   }
 
@@ -24,7 +29,5 @@ class AuthState<T extends StatefulWidget> extends SupabaseAuthState<T> {
   void onPasswordRecovery(Session session) {}
 
   @override
-  void onErrorAuthenticating(String message) {
-    context.showErrorSnackBar(message: message);
-  }
+  void onErrorAuthenticating(String message) {}
 }

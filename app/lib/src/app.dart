@@ -11,8 +11,6 @@ import 'package:portfolio_admin/src/features/tech/articles/tech_article_list_scr
 import 'package:portfolio_admin/src/features/tech/articles/tech_articles.dart';
 import 'package:portfolio_admin/src/features/tech/tags/tech_tag_list_screen.dart';
 
-import 'sample_feature/sample_item_details_view.dart';
-import 'sample_feature/sample_item_list_view.dart';
 import 'settings/settings_controller.dart';
 import 'settings/settings_view.dart';
 
@@ -91,10 +89,6 @@ class MyApp extends StatelessWidget {
                     }
                   case TechTagListScreen.routeName:
                     return const TechTagListScreen();
-                  case SampleItemListView.routeName:
-                    return const SampleItemListView();
-                  case SampleItemDetailsView.routeName:
-                    return const SampleItemDetailsView();
                   case AccountScreen.routeName:
                     return const AccountScreen();
                   case SettingsView.routeName:
