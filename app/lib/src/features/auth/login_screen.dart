@@ -71,7 +71,7 @@ class _LoginScreenState extends AuthState<LoginScreen> {
       body: ListView(
         padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
         children: [
-          const Text('Sign in via the magic link with your email below'),
+          const Text('管理アプリはログインが必要です。'),
           const SizedBox(height: 16),
           TextFormField(
             controller: _emailController,
