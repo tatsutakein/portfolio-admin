@@ -5,6 +5,7 @@ import 'package:portfolio_admin/src/features/account/account_screen.dart';
 import 'package:portfolio_admin/src/features/auth/change_password_screen.dart';
 import 'package:portfolio_admin/src/features/auth/login_screen.dart';
 import 'package:portfolio_admin/src/features/dashboard/dashboard_screen.dart';
+import 'package:portfolio_admin/src/features/eyecatches/eyecatch_choice_screen.dart';
 import 'package:portfolio_admin/src/features/splash/splash_screen.dart';
 import 'package:portfolio_admin/src/features/tech/articles/tech_article_edit_screen.dart';
 import 'package:portfolio_admin/src/features/tech/articles/tech_article_list_screen.dart';
@@ -89,6 +90,8 @@ class MyApp extends StatelessWidget {
                     }
                   case TechTagListScreen.routeName:
                     return const TechTagListScreen();
+                  case EyecatchChoiceScreen.routeName:
+                    return const EyecatchChoiceScreen();
                   case AccountScreen.routeName:
                     return const AccountScreen();
                   case SettingsView.routeName:
