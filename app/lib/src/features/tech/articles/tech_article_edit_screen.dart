@@ -204,14 +204,25 @@ class _TechArticleEditScreenState
               const SizedBox(height: 32),
             ],
           ),
-          AnimatedOpacity(
-            opacity: _isLoading ? 1: 0,
-            duration: const Duration(milliseconds: 250),
-            child: const Center(
-              child: CircularProgressIndicator.adaptive(),
-            ),
-          ),
+          LoadingView(isLoading: _isLoading),
         ],
+      ),
+    );
+  }
+}
+
+class LoadingView extends StatelessWidget {
+  final bool isLoading;
+
+  const LoadingView({super.key, required this.isLoading});
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedOpacity(
+      opacity: isLoading ? 1 : 0,
+      duration: const Duration(milliseconds: 250),
+      child: const Center(
+        child: CircularProgressIndicator.adaptive(),
       ),
     );
   }
