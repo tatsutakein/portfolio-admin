@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:portfolio_admin/src/components/auth_required_state.dart';
 import 'package:portfolio_admin/src/features/tech/articles/tech_article_edit_screen.dart';
 import 'package:portfolio_admin/src/features/tech/articles/tech_articles.dart';
-import 'package:portfolio_admin/src/features/tech/eyecatch.dart';
+import 'package:portfolio_admin/src/features/eyecatches/eyecatch.dart';
 import 'package:portfolio_admin/src/features/tech/tags/tech_tag_list_screen.dart';
 import 'package:portfolio_admin/src/features/tech/tech_article.dart';
 import 'package:portfolio_admin/src/utils/constants.dart';
@@ -26,8 +26,9 @@ class _TechArticleListScreenState
     setState(() => _isLoading = true);
 
     final articlesResponse = await supabase
-        .from('tech_full_articles')
-        .select('id, published_at, title, content, url, width, height')
+        .from('tech_articles')
+        .select(
+            'id, published_at, title, content, eyecatches ( id, url, width, height )')
         .execute();
 
     if (!mounted) return;
@@ -44,9 +45,13 @@ class _TechArticleListScreenState
             ? articleEntity['published_at'] as String
             : null,
         (articleEntity['title'] ?? '') as String,
-        (articleEntity['url'] != null)
-            ? Eyecatch(articleEntity['url'] as String,
-                articleEntity['width'] as int, articleEntity['height'] as int)
+        articleEntity['eyecatches'] != null
+            ? Eyecatch(
+                articleEntity['eyecatches']['id'] as String,
+                articleEntity['eyecatches']['url'] as String,
+                articleEntity['eyecatches']['width'] as int,
+                articleEntity['eyecatches']['height'] as int,
+              )
             : null,
       );
     }).toList();

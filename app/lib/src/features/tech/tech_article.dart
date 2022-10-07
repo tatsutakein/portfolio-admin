@@ -1,4 +1,4 @@
-import 'package:portfolio_admin/src/features/tech/eyecatch.dart';
+import 'package:portfolio_admin/src/features/eyecatches/eyecatch.dart';
 import 'package:portfolio_admin/src/features/tech/tech_tag.dart';
 
 /// 技術記事

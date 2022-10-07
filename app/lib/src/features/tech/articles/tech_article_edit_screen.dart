@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:portfolio_admin/src/components/auth_required_state.dart';
-import 'package:portfolio_admin/src/features/tech/eyecatch.dart';
+import 'package:portfolio_admin/src/features/eyecatches/eyecatch.dart';
+import 'package:portfolio_admin/src/features/eyecatches/eyecatch_choice_screen.dart';
 import 'package:portfolio_admin/src/features/tech/tags/tech_tag_list_screen.dart';
 import 'package:portfolio_admin/src/features/tech/tech_article.dart';
 import 'package:portfolio_admin/src/features/tech/tech_tag.dart';
@@ -27,11 +31,13 @@ class TechArticleEditScreenArguments {
 class _TechArticleEditScreenState
     extends AuthRequiredState<TechArticleEditScreen> {
   late TechArticle article;
-  late final TextEditingController _titleController;
-  late final TextEditingController _contentController;
-  DateTime? _publishedAt;
+
   var _isLoading = false;
   var _isUpdating = false;
+  DateTime? _publishedAt;
+  Eyecatch? _eyecatch;
+  late final TextEditingController _titleController;
+  late final TextEditingController _contentController;
 
   /// Called once a user id is received within `onAuthenticated()`
   Future<void> _getArticle() async {
@@ -40,7 +46,7 @@ class _TechArticleEditScreenState
     final articleResponse = await supabase
         .from('tech_articles')
         .select(
-            'id, published_at, title, content, eyecatches ( url, width, height ), tech_article_tag_links ( tech_tag_id, tech_tags ( name ) )')
+            'id, published_at, title, content, eyecatches ( id, url, width, height ), tech_article_tag_links ( tech_tag_id, tech_tags ( name ) )')
         .eq('id', widget.id)
         .single()
         .execute();
@@ -61,6 +67,7 @@ class _TechArticleEditScreenState
       (entity['content'] ?? '') as String,
       (entity['eyecatches'] != null)
           ? Eyecatch(
+              entity['eyecatches']['id'] as String,
               entity['eyecatches']['url'] as String,
               entity['eyecatches']['width'] as int,
               entity['eyecatches']['height'] as int,
@@ -82,11 +89,21 @@ class _TechArticleEditScreenState
     _contentController.text = article.content;
 
     final publishedAtString = article.publishedAt;
-    setState(() => _publishedAt = (publishedAtString != null)
-        ? DateTime.tryParse(publishedAtString)
-        : null);
+    setState(() {
+      _publishedAt = publishedAtString != null
+          ? DateTime.tryParse(publishedAtString)
+          : null;
+
+      _eyecatch = article.eyecatch;
+    });
 
     setState(() => _isLoading = false);
+  }
+
+  Future<Image?> _getPictureImage() async {
+    ImagePicker picker = ImagePicker();
+    XFile? xfile = await picker.pickImage(source: ImageSource.gallery);
+    return (xfile != null) ? Image.file(File(xfile.path)) : null;
   }
 
   Future<void> _updateArticle() async {
@@ -172,6 +189,36 @@ class _TechArticleEditScreenState
                     ),
                   ),
                 ],
+              ),
+              InkWell(
+                onTap: () async {
+                  final result = await Navigator.pushNamed(
+                    context,
+                    EyecatchChoiceScreen.routeName,
+                  );
+
+                  if (result is! Eyecatch) return;
+                  setState(() => _eyecatch = result);
+                },
+                child: _eyecatch != null
+                    ? Column(
+                        children: [
+                          Image(
+                            image: NetworkImage(_eyecatch!.url),
+                          ),
+                          const SizedBox(height: 16)
+                        ],
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          const Text('アイキャッチ画像を選択する'),
+                          Container(
+                            padding: const EdgeInsets.all(16),
+                            child: const Icon(Icons.image),
+                          ),
+                        ],
+                      ),
               ),
               const Text('タイトル'),
               const SizedBox(height: 16),
