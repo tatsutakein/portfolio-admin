@@ -29,6 +29,7 @@ class _TechArticleListScreenState
         .from('tech_articles')
         .select(
             'id, published_at, title, content, eyecatches ( id, url, width, height )')
+        .order('created_at', ascending: false)
         .execute();
 
     if (!mounted) return;

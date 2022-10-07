@@ -109,6 +109,25 @@ class _TechArticleEditScreenState
   Future<void> _updateArticle() async {
     setState(() => _isUpdating = true);
 
+    final updateArticleResponse = await supabase
+        .from('tech_articles')
+        .update({
+          'published_at': _publishedAt?.toUtc().toIso8601String(),
+          'title': _titleController.text,
+          'content': _contentController.text,
+          'eyecatch_id': _eyecatch?.id,
+        })
+        .eq('id', widget.id)
+        .execute();
+
+    if (!mounted) return;
+    final articlesError = updateArticleResponse.error;
+    if (articlesError != null && updateArticleResponse.status != 406) {
+      context.showErrorSnackBar(message: articlesError.message);
+    }
+
+    context.showSnackBar(message: '保存しました。');
+
     setState(() => _isUpdating = false);
   }
 
